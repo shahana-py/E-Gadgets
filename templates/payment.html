@@ -1,0 +1,83 @@
+{% load gettotal %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .payment-methods {
+            margin: 15px 0;
+        }
+        .payment-methods label {
+            font-weight: normal;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Payment Form</h2>
+        <form action="/submit-payment" method="POST">
+            
+            <div class="payment-methods">
+                <p>Select Payment Method:</p>
+                <label><input type="radio" name="payment_method" value="cod" required> Cash on Delivery</label><br>
+                <label><input type="radio" name="payment_method" value="upi"> UPI</label><br>
+                <label><input type="radio" name="payment_method" value="wallet"> Wallet</label>
+            </div>
+             <form method="post" action="{% url 'checkout' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                 <input type="hidden" name="total" value="{% gettotal cart %}" /> 
+                <button class="btn" type="submit">Confirm Order</button>
+            </form> 
+            <!-- <button type="submit">Pay Now</button> -->
+        </form>
+    </div>
+</body>
+</html>

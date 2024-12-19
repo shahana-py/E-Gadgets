@@ -1,0 +1,75 @@
+{% load static %}
+{% load getstatus %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Gadgets</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/jpg" href="{% static 'images/EG logo.jpg' %}">
+</head>
+
+<div class="small-container cart-page">
+    <div class="row row-2" ><h1 >Your Orders</h1></div>
+    {% if orders %}
+    <table>
+        <tbody><tr>
+            <th>image</th>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Price</th>
+            <th>status</th>
+            
+        
+        </tr>
+        {% for order in orders %}
+            {% for item in order.added_items.all %}
+        <tr>
+          
+
+           <td>
+                <!-- Displaying product image -->
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width:100px; height:auto;">
+           </td>
+           <td>{{ order.id }}</td>
+           <td>{{ order.created_at }}</td>
+           <td>{{ item.product.price }}</td>
+          
+           
+           <td>{% getstatus order.order_status %}</td>
+           
+           {% endfor %}
+           
+        <!-- </tr>
+            <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total Price:{{ order.total_price }}</td>
+            
+            <td></td></tr> -->
+        {% endfor %}
+    </tbody></table>
+    {% else %}
+    <p>No Orders</p>
+    {% endif %}
+</div>
+
+
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px"
+        }
+        else {
+            MenuItems.style.maxHeight = "0px"
+        }
+    }
+</script>

@@ -1,0 +1,90 @@
+{% load static %}
+{% load chunks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Gadgets</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/jpg" href="{% static 'images/EG logo.jpg' %}">
+</head>
+
+{% block menu %}
+{% include 'menu.html' %}
+{% endblock menu %}
+
+
+<div class="small-container">
+
+     <div class="row row-2">
+        <h1>All Products</h1>
+       
+       
+     </div>
+{% for product_chunks in products|chunks:4 %}    
+<div class="row">
+    {% for product in product_chunks %}
+    <div class="col-4">
+        <div style=" width:240px; height:270px "><a href="{% url 'detail_product' product.id %}"><img src="{{ product.image.url }}"></a></div>
+        <div><h4>{{ product.title }}</h4></div>
+        <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+        </div>
+        <p>{{ product.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+<div class="page-btn">
+    {% if products.has_previous %}
+    <a href="?page={{ products.previous_page_number }}"><span><<</span></a>
+    {% endif %}
+
+    {% for i in products.paginator.page_range %}
+    <a href="?page={{i}}"><span class="active">{{i}}</span></a>
+    {% endfor %}
+
+    {% if products.has_next %}
+    <a href="?page={{ products.next_page_number }}"><span>>></span></a>
+    {% endif %}
+
+</div>
+</div>
+
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock footer %}
+
+<!-- javascript -->
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px"
+        }
+        else {
+            MenuItems.style.maxHeight = "0px"
+        }
+    }
+</script>
+
+<script>
+    function navigateToPage() {
+        const select = document.getElementById("categorySelect");
+        const selectedPage = select.value;
+    
+        if (selectedPage) {
+            window.location.href = selectedPage;
+        }
+    }
+    </script>
